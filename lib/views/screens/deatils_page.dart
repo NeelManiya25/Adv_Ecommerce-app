@@ -16,7 +16,7 @@ class _Details_pageState extends State<Details_page> {
         ModalRoute.of(context)!.settings.arguments as FakeStoreData;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Details Page"),
+        title: Text("Detail Page"),
       ),
       body: Container(
         padding: EdgeInsets.all(10),

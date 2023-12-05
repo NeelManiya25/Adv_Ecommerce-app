@@ -1,8 +1,8 @@
-import 'package:adv_ecommerce_app/views/screens/cart_page.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:neel/controller/provider/add-remove_cart.dart';
+import 'package:neel/controller/provider/api_controller.dart';
+import 'package:provider/provider.dart';
 
-import '../../helper/api_helper.dart';
 import '../../modal/api_modal.dart';
 
 class HomePage extends StatefulWidget {
@@ -28,13 +28,16 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
               onPressed: () {
-                Get.to(cart_page(), arguments: cartItems);
+                Navigator.of(context).pushNamed("cart_page",
+                    arguments: Provider.of<CartProvider>(context, listen: false)
+                        .cartItems);
               },
               icon: Icon(Icons.shopping_cart))
         ],
       ),
       body: FutureBuilder(
-          future: ApiHelper.apiHelper.fetchApiData(),
+          future: Provider.of<Product_provider>(context, listen: false)
+              .productdata(),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return Center(
@@ -82,18 +85,17 @@ class _HomePageState extends State<HomePage> {
                                 Navigator.of(context).pushNamed("Details_page",
                                     arguments: data[index]);
                               },
-                              child: Text("more"),
+                              child: Text("Details"),
                             ),
                             SizedBox(
                               width: 8,
                             ),
                             ElevatedButton(
                               onPressed: () {
-                                addToCart(data[index]);
+                                Provider.of<CartProvider>(context,
+                                        listen: false)
+                                    .addToCart(data[index]);
                                 print(data[index]);
-                                setState(() {
-                                  cartItems?.add(data as FakeStoreData);
-                                });
                               },
                               child: Text("ADD"),
                             ),
